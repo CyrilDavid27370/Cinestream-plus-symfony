@@ -1,0 +1,57 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: csp_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - csp_network
+
+  php:
+    build:
+      context: ./docker/php
+    container_name: csp_php
+    volumes:
+      - .:/var/www/html
+    networks:
+      - csp_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: csp_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cinestream_plus
+      MYSQL_USER: csp_user
+      MYSQL_PASSWORD: csp_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - csp_mysql_data:/var/lib/mysql
+    networks:
+      - csp_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: csp_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - csp_network
+
+networks:
+  csp_network:
+    driver: bridge
+
+volumes:
+  csp_mysql_data:
