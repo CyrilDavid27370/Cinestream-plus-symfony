@@ -123,4 +123,14 @@ public function update(int $id, Request $request, FilmRepository $filmRepository
         'query' => $query,
     ]);
     }
+
+    #[Route('/search/tmdb/{tmdbId}', name: 'app_search_tmdb')]
+    public function showTmdb(int $tmdbId, TmdbService $tmdbService): Response
+    {
+    $filmData = $tmdbService->getById($tmdbId);
+
+    return $this->render('film/showTmdb.html.twig', [
+        'filmData' => $filmData,
+    ]);
+    }
 }

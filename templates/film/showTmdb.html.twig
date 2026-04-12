@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ filmData.title }}{% endblock %}
+
+{% block body %}
+<main>
+    <div class="film-detail">
+        <div class="film-detail-top">
+
+            <div class="film-detail-poster">
+                {% if filmData.poster_path %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ filmData.poster_path }}" alt="{{ filmData.title }}">
+                {% else %}
+                    <div class="no-poster">🎥</div>
+                {% endif %}
+            </div>
+
+            <div class="film-detail-info">
+                <div class="film-detail-header">
+                    <h2>{{ filmData.title }}</h2>
+                    <a href="#">➕</a>
+                </div>
+
+                <div class="film-detail-meta">
+                    📅 {{ filmData.release_date|date('Y') }} | 
+                    ⏱️ {{ filmData.runtime }} min | 
+                    ⭐ {{ filmData.vote_average|round(1) }}/10
+                </div>
+            </div>
+        </div>
+
+        <div class="film-detail-overview">
+            {{ filmData.overview }}
+        </div>
+    </div>
+
+    <div class="btn-back-container">
+        <a href="{{ path('app_search') }}" class="btn-back">Retour à la recherche</a>
+    </div>
+</main>
+{% endblock %}

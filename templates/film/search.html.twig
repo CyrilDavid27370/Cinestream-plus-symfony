@@ -17,7 +17,7 @@
 
     <div class="search-grid">
         {% for result in results %}
-            <a href="#" class="search-card-link">
+                <a href="{{ path('app_search_tmdb', {'tmdbId': result.id}) }}" class="search-card-link">
                 <div class="search-card">
                     {% if result.poster_path %}
                         <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" alt="{{ result.title }}">
