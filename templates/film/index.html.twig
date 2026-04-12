@@ -5,15 +5,23 @@
 {% block body %}
 <main>
     <div class="filters">
-        <button class="active">Tous les films</button>
-    
+    <button class="{{ currentGenre is null ? 'active' : '' }}">
+        <a href="{{ path('app_film_index') }}">Tous les films</a>
+    </button>
+
     {% for genre in genres %}
-        <button>{{ genre.name }}</button>
+        <button class="{{ currentGenre == genre.id ? 'active' : '' }}">
+            <a href="{{ path('app_film_index', {'genre': genre.id}) }}">{{ genre.name }}</a>
+        </button>
     {% endfor %}
-    
-    <button>n/c</button>
-    <button>👁️</button>
-    <button>🕒</button>
+
+        <button>n/c</button>
+        <button class="{{ currentWatched == '1' ? 'active' : '' }}">
+        <a href="{{ path('app_film_index', {'watched': '1'}) }}">👁️</a>
+        </button>
+        <button class="{{ currentWatched == '0' ? 'active' : '' }}">
+        <a href="{{ path('app_film_index', {'watched': '0'}) }}">🕒</a>
+        </button>
     </div>
     
     <div class="films-grid">
