@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des catégories{% endblock %}
+
+{% block body %}
+<div class="genres-container">
+    <div class="genres-header">
+        <h2>🎭 Gestion des catégories</h2>
+        <a href="{{ path('app_genre_create') }}" class="btn-submit">➕ Ajouter</a>
+    </div>
+
+    {% if genres is not empty %}
+        <table class="genres-table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for genre in genres %}
+                    <tr>
+                        <td>{{ genre.name }}</td>
+                        <td>
+                            <a href="{{ path('app_genre_update', {'id': genre.id}) }}" class="btn-edit">✏️</a>
+                            <form method="POST" action="{{ path('app_genre_delete', {'id': genre.id}) }}" 
+                                onsubmit="return confirm('Supprimer cette catégorie ?')" style="display:inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_genre' ~ genre.id) }}">
+                                <button type="submit" class="btn-delete-modal">❌</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-message">🎭 Aucune catégorie disponible.</p>
+    {% endif %}
+</div>
+{% endblock %}

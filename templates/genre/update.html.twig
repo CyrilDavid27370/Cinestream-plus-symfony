@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une catégorie{% endblock %}
+
+{% block body %}
+<div class="genres-container">
+    <form method="POST" action="{{ path('app_genre_update', {'id': genre.id}) }}">
+        <div class="genres-header">
+            <h2>Modifier une catégorie</h2>
+            <input type="text" name="name" class="search-input" 
+                placeholder="Nom de la catégorie" value="{{ genre.name }}" required>
+        </div>
+
+        <div class="btn-back-container">
+            <button type="submit" class="btn-submit">Modifier</button>
+            <a href="{{ path('app_genre_index') }}" class="btn-back">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
