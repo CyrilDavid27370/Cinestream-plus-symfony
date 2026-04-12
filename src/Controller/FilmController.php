@@ -53,8 +53,8 @@ final class FilmController extends AbstractController
         ]);
     }
 
-   #[Route('/film/{id}/delete', name: 'app_film_delete', methods: ['POST'])]
-public function delete(int $id, Request $request, FilmRepository $filmRepository, EntityManagerInterface $entityManager): Response
+    #[Route('/film/{id}/delete', name: 'app_film_delete', methods: ['POST'])]
+    public function delete(int $id, Request $request, FilmRepository $filmRepository, EntityManagerInterface $entityManager): Response
 {
     $film = $filmRepository->find($id);
 
@@ -68,5 +68,43 @@ public function delete(int $id, Request $request, FilmRepository $filmRepository
     }
 
     return $this->redirectToRoute('app_film_index');
+    }
+
+    #[Route('/film/{id}/update', name: 'app_film_update', methods: ['GET', 'POST'])]
+public function update(int $id, Request $request, FilmRepository $filmRepository, GenreRepository $genreRepository, EntityManagerInterface $entityManager): Response
+{
+    $film = $filmRepository->find($id);
+
+    if (!$film) {
+        throw $this->createNotFoundException('Film not found');
+    }
+    
+    if ($request->isMethod('POST')) {
+        $genreId = $request->request->get('genre_id');
+        $description = $request->request->get('description');
+        $isWatched = $request->request->get('isWatched') === '1';
+
+        if ($genreId) {
+            $genre = $genreRepository->find($genreId);
+            $film->setGenre($genre);
+        } else {
+            $film->setGenre(null);
+        }
+
+        $film->setDescription($description);
+        $film->setIsWatched($isWatched);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_film_show', ['id' => $film->getId()]);
+    }
+
+    $genres = $genreRepository->findAll();
+
+    return $this->render('film/update.html.twig', [
+        'film' => $film,
+        'genres' => $genres,
+    ]);
 }
+
 }

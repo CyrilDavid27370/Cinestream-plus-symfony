@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ film.title }}{% endblock %}
+
+{% block body %}
+<main>
+    <div class="film-detail">
+        <div class="film-detail-top">
+
+            <div class="film-detail-poster">
+                {% if film.posterPath %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ film.posterPath }}" alt="{{ film.title }}">
+                {% else %}
+                    <div class="no-poster">🎥</div>
+                {% endif %}
+            </div>
+
+            <div class="film-detail-info">
+                <div class="film-detail-header">
+                    <h2>{{ film.title }}</h2>
+                </div>
+
+                <p class="film-detail-meta">
+                    📅 {{ film.releaseDate }} | ⏱️ {{ film.runtime }} min
+                </p>
+
+                <form method="POST" action="{{ path('app_film_update', {'id': film.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('update' ~ film.id) }}">
+
+                    <div class="form-genre-row">
+                        <select name="genre_id" class="form-select">
+                            <option value="">-- Choisir un genre --</option>
+                            {% for genre in genres %}
+                                <option value="{{ genre.id }}" {{ film.genre and film.genre.id == genre.id ? 'selected' : '' }}>
+                                    {{ genre.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <div class="form-radio">
+                            <label>
+                                <input type="radio" name="isWatched" value="0" {{ not film.isWatched ? 'checked' : '' }}> 🕒
+                            </label>
+                            <label>
+                                <input type="radio" name="isWatched" value="1" {{ film.isWatched ? 'checked' : '' }}> 👁️
+                            </label>
+                        </div>
+                    </div>
+
+                    <textarea name="description" class="form-textarea" placeholder="Entrer une note personnalisée">{{ film.description ?? '' }}</textarea>
+
+                    <button type="submit" class="btn-submit">💾 Modifier</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="film-detail-overview">
+            {{ film.overview }}
+        </div>
+    </div>
+
+    <div class="btn-back-container">
+        <a href="{{ path('app_film_show', {'id': film.id}) }}" class="btn-back">Retour à la fiche</a>
+    </div>
+</main>
+{% endblock %}
