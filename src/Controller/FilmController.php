@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\FilmRepository;
 use App\Repository\GenreRepository;
+use App\Service\TmdbService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,6 +106,21 @@ public function update(int $id, Request $request, FilmRepository $filmRepository
         'film' => $film,
         'genres' => $genres,
     ]);
-}
+    }
 
+    #[Route('/search', name: 'app_search')]
+    public function search(Request $request, TmdbService $tmdbService): Response
+    {
+    $query = $request->query->get('q');
+    $results = [];
+
+    if ($query) {
+        $results = $tmdbService->search($query);
+    }
+
+    return $this->render('film/search.html.twig', [
+        'results' => $results,
+        'query' => $query,
+    ]);
+    }
 }

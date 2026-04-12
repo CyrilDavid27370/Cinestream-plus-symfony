@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block body %}
+<div class="search-container">
+
+    <form class="search-form" action="{{ path('app_search') }}" method="GET">
+        <div class="search-input-row">
+            <input type="text" name="q" class="search-input"
+                placeholder="Rechercher un film..."
+                value="{{ query ?? '' }}"
+                autocomplete="off">
+            <button type="submit" class="btn-submit">🔍 Rechercher</button>
+        </div>
+    </form>
+
+    <div class="search-grid">
+        {% for result in results %}
+            <a href="#" class="search-card-link">
+                <div class="search-card">
+                    {% if result.poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{ result.poster_path }}" alt="{{ result.title }}">
+                    {% else %}
+                        <div class="no-poster">🎥</div>
+                    {% endif %}
+                    <div class="search-card-title">{{ result.title }}</div>
+                    <div class="search-card-meta">📅 {{ result.release_date|date('Y') }}</div>
+                </div>
+            </a>
+        {% else %}
+            {% if query %}
+                <p class="empty-message">🎬 Aucun résultat trouvé pour "{{ query }}".</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
