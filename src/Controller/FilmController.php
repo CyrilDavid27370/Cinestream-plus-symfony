@@ -18,6 +18,7 @@ final class FilmController extends AbstractController
     {
         $genreId = $request->query->get('genre');
         $watched = $request->query->get('watched');
+        $view = $request->query->get('view', 'grid');
 
         $criteria = [];
 
@@ -37,6 +38,7 @@ final class FilmController extends AbstractController
             'genres' => $genres,
             'currentGenre' => $genreId ?? null,
             'currentWatched' => $watched ?? null,
+            'view' => $view,
         ]);
     }
 

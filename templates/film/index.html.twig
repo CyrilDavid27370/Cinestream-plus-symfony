@@ -23,8 +23,13 @@
         <a href="{{ path('app_film_index', {'watched': '0'}) }}">🕒</a>
         </button>
     </div>
-    
-    <div class="films-grid">
+
+    <div class="view-toggle">
+    <a href="{{ path('app_film_index', {'view': 'grid'}) }}" class="btn-toggle {{ view != 'list' ? 'active' : '' }}">🔲 Grille</a>
+    <a href="{{ path('app_film_index', {'view': 'list'}) }}" class="btn-toggle {{ view == 'list' ? 'active' : '' }}">📋 Liste</a>
+    </div>
+
+    <div id="films-container" class="{{ view == 'list' ? 'list-view' : 'films-grid' }}">    
         {% for film in films %}
             <a href="{{ path('app_film_show', {'id': film.id}) }}" class="card-link">
                 <div class="card">
