@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ film.title }}{% endblock %}
+
+{% block body %}
+<main>
+    <div class="film-detail">
+        <div class="film-detail-top">
+            
+            {# Affiche #}
+            <div class="film-detail-poster">
+                {% if film.posterPath %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ film.posterPath }}" alt="{{ film.title }}">
+                {% else %}
+                    <div class="no-poster">🎥</div>
+                {% endif %}
+            </div>
+
+            {# Infos #}
+            <div class="film-detail-info">
+                <div class="film-detail-header">
+                    <h2>{{ film.title }}</h2>
+                    <div class="film-detail-actions">
+                        <a href="#">✏️</a>
+                        <form action="{{ path('app_film_delete', {'id': film.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce film ?');">
+                          <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ film.id) }}">
+                          <button type="submit" class="btn-delete-modal">❌</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="film-detail-meta">
+                    📅 {{ film.releaseDate }} | ⏱️ {{ film.runtime }} min | 
+                    🎭 {{ film.genre ? film.genre.name : 'n/c' }} |
+                    {% if film.isWatched %}👁️ Vu{% else %}🕒 À voir{% endif %}
+                </div>
+
+                <div class="film-detail-description">
+                    {{ film.description ?? 'Aucune description personnelle.' }}
+                </div>
+            </div>
+        </div>
+
+        {# Synopsis #}
+        <div class="film-detail-overview">
+            {{ film.overview }}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\FilmRepository;
 use App\Repository\GenreRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,4 +38,35 @@ final class FilmController extends AbstractController
             'currentWatched' => $watched ?? null,
         ]);
         }
+
+    #[Route('/film/{id}', name: 'app_film_show')]
+    public function show(int $id, FilmRepository $filmRepository): Response
+    {
+        $film = $filmRepository->find($id);
+
+        if (!$film) {
+            throw $this->createNotFoundException('Film not found');
+        }
+
+        return $this->render('film/show.html.twig', [
+            'film' => $film,
+        ]);
+    }
+
+   #[Route('/film/{id}/delete', name: 'app_film_delete', methods: ['POST'])]
+public function delete(int $id, Request $request, FilmRepository $filmRepository, EntityManagerInterface $entityManager): Response
+{
+    $film = $filmRepository->find($id);
+
+    if (!$film) {
+        throw $this->createNotFoundException('Film not found');
+    }
+
+    if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
+        $entityManager->remove($film);
+        $entityManager->flush();
+    }
+
+    return $this->redirectToRoute('app_film_index');
+}
 }
