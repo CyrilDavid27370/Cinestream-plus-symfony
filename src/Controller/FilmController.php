@@ -43,7 +43,7 @@ final class FilmController extends AbstractController
     }
 
     #[Route('/film/{id}', name: 'app_film_show')]
-    public function show(int $id, FilmRepository $filmRepository): Response
+    public function show(int $id, FilmRepository $filmRepository, TmdbService $tmdbService): Response
     {
         $film = $filmRepository->find($id);
 
@@ -51,8 +51,11 @@ final class FilmController extends AbstractController
             throw $this->createNotFoundException('Film not found');
         }
 
+        $trailer = $tmdbService->getTrailer($film->getTmdbId());
+
         return $this->render('film/show.html.twig', [
             'film' => $film,
+            'trailer' => $trailer,
         ]);
     }
 

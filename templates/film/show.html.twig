@@ -46,5 +46,16 @@
             {{ film.overview }}
         </div>
     </div>
+
+        {# Bande-annonce #}
+    {% if trailer %}
+        <div class="film-trailer">
+            <h3>🎬 Bande-annonce</h3>
+            <iframe 
+            src="https://www.youtube.com/embed/{{ trailer }}"
+            allowfullscreen>
+            </iframe>
+        </div>
+    {% endif %}
 </main>
 {% endblock %}

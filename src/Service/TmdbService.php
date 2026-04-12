@@ -38,4 +38,24 @@ class TmdbService
 
         return $response->toArray();
     }
+
+    public function getTrailer(int $tmdbId): ?string
+{
+    $response = $this->httpClient->request('GET', $this->baseUrl . '/movie/' . $tmdbId . '/videos', [
+        'query' => [
+            'api_key' => $this->apiKey,
+            'language' => 'fr-FR',
+        ]
+    ]);
+
+    $videos = $response->toArray()['results'] ?? [];
+
+    foreach ($videos as $video) {
+        if ($video['type'] === 'Trailer' && $video['site'] === 'YouTube') {
+            return $video['key'];
+        }
+    }
+
+    return null;
+}
 }
