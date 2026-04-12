@@ -86,6 +86,7 @@ final class FilmController extends AbstractController
             $genreId = $request->request->get('genre_id');
             $description = $request->request->get('description');
             $isWatched = $request->request->get('isWatched') === '1';
+            $rating = $request->request->get('rating');
 
             if ($genreId) {
                 $genre = $genreRepository->find($genreId);
@@ -96,6 +97,7 @@ final class FilmController extends AbstractController
 
             $film->setDescription($description);
             $film->setIsWatched($isWatched);
+            $film->setRating($rating !== null && $rating !== '' ? (int) $rating : null);
 
             $entityManager->flush();
 

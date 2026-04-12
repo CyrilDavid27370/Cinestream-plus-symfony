@@ -1722,6 +1722,10 @@ main {
         box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3); 
     }
 
+    .stars-input {
+    flex-wrap: nowrap;
+}
+
     .stars-input label {
         font-size: 1.5rem;
     }

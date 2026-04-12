@@ -47,13 +47,24 @@
                         </div>
                     </div>
 
-                    <textarea name="description" class="form-textarea" placeholder="Entrer une note personnalisée">{{ film.description ?? '' }}</textarea>
+                   <textarea name="description" class="form-textarea" placeholder="Entrer une note personnalisée">{{ film.description ?? '' }}</textarea>
+
+                    <div class="form-rating">
+                        <label class="form-label rating-label">⭐ Note personnelle</label>
+                        <div class="stars-input">
+                            <input type="radio" name="rating" id="star0" value="0" {{ film.rating == 0 or film.rating is null ? 'checked' : '' }}>
+                            <label for="star0">❌</label>
+                            {% for i in 1..10 %}
+                                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {{ film.rating == i ? 'checked' : '' }}>
+                                <label for="star{{ i }}">⭐</label>
+                            {% endfor %}
+                        </div>
+                    </div>
 
                     <button type="submit" class="btn-submit">💾 Modifier</button>
                 </form>
             </div>
         </div>
-
         <div class="film-detail-overview">
             {{ film.overview }}
         </div>
