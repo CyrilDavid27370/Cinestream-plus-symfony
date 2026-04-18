@@ -1,24 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Accueil{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     </head>
     <body>
         <header>
-    <h1>🎬 CinéStream+</h1>
-    <p>Votre cinéma, partout, à tout moment.</p>
-</header>
-<nav>
-    <ul id="nav-menu">
-        <li><a href="{{ path('app_film_index') }}">📼 Vidéothèque</a></li>
-        <li><a href="{{ path('app_search') }}">🔍 Recherche</a></li>
-        <li><a href="{{ path('app_genre_index') }}">🎭 Catégories</a></li>
-    </ul>
-</nav>
+            <h1>🎬 CinéStream+</h1>
+            <p>Votre cinéma, partout, à tout moment.</p>
+        </header>
+        <nav>
+            <input type="checkbox" id="nav-toggle">
+            <label for="nav-toggle" class="hamburger">☰</label>
+            <ul id="nav-menu">
+                <li><a href="{{ path('app_film_index') }}">📼 Vidéothèque</a></li>
+                <li><a href="{{ path('app_search') }}">🔍 Recherche</a></li>
+                <li><a href="{{ path('app_genre_index') }}">🎭 Catégories</a></li>
+            </ul>
+        </nav>
 
         {% block body %}{% endblock %}
-
     </body>
 </html>
